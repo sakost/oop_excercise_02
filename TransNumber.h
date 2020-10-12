@@ -73,16 +73,16 @@ TransNumber<T> TransNumber<T>::operator-(const TransNumber &other) {
 template<typename T>
 TransNumber<T> TransNumber<T>::operator*(const TransNumber &other) {
     return TransNumber<T>(
-            real * other.real - trans * other.trans,
-            real * other.trans - other.real * trans
+            real * other.real,
+            real * other.trans + other.real * trans + trans * other.trans * C
     );
 }
 
 template<typename T>
 TransNumber<T> TransNumber<T>::operator/(const TransNumber &other) {
     return TransNumber<T>(
-            (real * other.real + trans * other.trans) / (other.real * other.real + other.trans * other.trans),
-            (trans * other.real + real * other.trans) / (other.real * other.real + other.trans * other.trans)
+            real/other.getValue(),
+            trans/other.getValue()
     );
 }
 
