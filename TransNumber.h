@@ -6,6 +6,7 @@
 #define OOP_EXCERCISE_02_TRANSNUMBER_H
 
 #include <iostream>
+#include <cmath>
 
 const long double C = 2.l;
 
@@ -73,22 +74,22 @@ TransNumber<T> TransNumber<T>::operator-(const TransNumber &other) {
 template<typename T>
 TransNumber<T> TransNumber<T>::operator*(const TransNumber &other) {
     return TransNumber<T>(
-            real * other.real,
-            real * other.trans + other.real * trans + trans * other.trans * C
+            real * other.real + trans * other.trans * C,
+            real * other.trans + other.real * trans
     );
 }
 
 template<typename T>
 TransNumber<T> TransNumber<T>::operator/(const TransNumber &other) {
     return TransNumber<T>(
-            real/other.getValue(),
-            trans/other.getValue()
+            (real * other.real - C * trans * other.trans) / (other.real * other.real - C * other.trans * other.trans),
+            (trans * other.real - real * other.trans)/(other.real * other.real - C * other.trans * other.trans)
     );
 }
 
 template<typename T>
 T TransNumber<T>::getValue() const {
-    return real + trans * C;
+    return real + trans * std::sqrt(C);
 }
 
 template<typename T>
@@ -123,7 +124,7 @@ bool TransNumber<T>::operator!=(const TransNumber<T> &other) {
 
 template<typename T>
 std::ostream &operator<<(std::ostream &os, const TransNumber<T> &transNumber) {
-    os << '(' << transNumber.real << ", " << transNumber.trans << ')';
+    os << transNumber.real << " + " << transNumber.trans << "*sqrt(2)";
     return os;;
 }
 
